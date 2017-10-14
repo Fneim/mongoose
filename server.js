@@ -18,11 +18,18 @@ app.use(bodyParser.urlencoded({ extended: false}));
 
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost/mongooseCNNScraper");
-var db = mongoose.connection;
+var db = process.env.MONGODB_URL || "mongodb://localhost/mongooseCNNScraper";
 
-db.on("error", function(error) {
-  console.log("Mongoose error: ",error);
+// db.on("error", function(error) {
+//   console.log("Mongoose error: ",error);
+// });
+
+mongoose.connect(db, function(err) {
+  if(err) {
+    console.log(err);
+  } else {
+    console.log("Mongoose connection successful.");
+  }
 });
 
 //routes
